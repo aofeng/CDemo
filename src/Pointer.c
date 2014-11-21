@@ -1,6 +1,7 @@
 /* C语言指针 */
 
 #include <stdio.h>
+#include <stdint.h>
 
 /**
  * 打印标题。标题格式：第一行空行，第二行为标题，第三行为20个"="
@@ -15,30 +16,30 @@ void printfTitle(char *title) {
 void assign() {
     printfTitle("指针赋值运算");
 
-    // 把一个变量的地址赋予相同类型的指针变量
+    // ＊＊＊＊＊＊＊＊＊＊ 把一个变量的地址赋予相同类型的指针变量 ＊＊＊＊＊＊＊＊＊＊
     int a, *pa;
     a = 5;
     pa = &a;
-    printf("a=%d, a's address=%d, pa=%d, *pa=%d, pa's address=%d \n", a, &a,  pa,  (*pa), &pa);
+    printf("a=%d, a's address=%p, pa=%p, *pa=%d, pa's address=%p \n", a, &a,  pa,  (*pa), &pa);
 //    输出结果：
 //    a=5, a's address=1993307092, pa=1993307092, *pa=5, pa's address=1993307080
 
-    // 把一个指针变量的值赋予另一个指针变量
+    // ＊＊＊＊＊＊＊＊＊＊ 把一个指针变量的值赋予另一个指针变量 ＊＊＊＊＊＊＊＊＊＊
     int *pb = pa;
-    printf("*pb=%d, pb's address=%d, pb=%d \n", (*pb), &pb, pb );
+    printf("*pb=%d, pb's address=%p, pb=%p \n", (*pb), &pb, pb );
     printf("pa==pb的结果:%d \n", (pa==pb) );
 //    输出结果：
 //    *pb=5, pb's address=1993307072, pb=1993307092
 //     pa==pb的结果:1
 
-    // 把数组首地址赋予指针变量
+    // ＊＊＊＊＊＊＊＊＊＊ 把数组首地址赋予指针变量 ＊＊＊＊＊＊＊＊＊＊
     long c[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     long *pc = c;
-    printf("*c=%ld, c's address=%d, c=%d, pc=%d, *pc=%ld, pc's address=%d \n", *c, &c, c, pc,  (*pc), &pc );
+    printf("*c=%ld, c's address=%p, c=%p, pc=%p, *pc=%ld, pc's address=%p \n", *c, &c, c, pc,  (*pc), &pc );
 //    输出结果：
 //    *c=1, c's address=206007712, c=206007712, pc=206007712, *pc=1, pc's address=206007704
 
-    // 把字符串的首地址赋予指针变量
+    // ＊＊＊＊＊＊＊＊＊＊ 把字符串的首地址赋予指针变量 ＊＊＊＊＊＊＊＊＊＊
     char *str = "abcdefghijklmnopqrstuvwxyz";
     printf("*str=%c \n", (*str));
 //    输出结果：
@@ -53,11 +54,11 @@ void arrayPointer() {
 
     long c[8] = {10, 9, 8, 7, 6, 5, 4, 3};
     printf("c[8] = {10, 9, 8, 7, 6, 5, 4, 3} \n");
-    printf("c=%d, *c=%2d \n", c,  *c );
+    printf("c=%p, *c=%2ld \n", c,  *c );
     long *pc = c;  // 不能直接对c进行加减运算，否则编译时会报错"自增运算中的左值无效"
     int var = 0;
     for (; var < 8; ++var) {
-        printf("pc=%d, *pc=%2d,  c=%d, *c=%2d  \n", pc, *pc, c, *c );
+        printf("pc=%p, *pc=%2ld,  c=%p, *c=%2ld  \n", pc, *pc, c, *c );
         pc += 1;
     }
 //    输出结果：
@@ -85,7 +86,7 @@ void stringPointer() {
 
     int index = 0;
     for (; index < 26; ++index) {
-        printf("str=%d, *str=%c \n", str, *str);
+        printf("str=%p, *str=%c \n", str, *str);
         str++;
     }
 //    输出结果：
@@ -119,10 +120,51 @@ void stringPointer() {
 //    str=4196769, *str=z
 }
 
+/**
+ * 指针与常量。
+ */
+void pointerAndConst() {
+    printfTitle("指针与常量");
+
+    // ＊＊＊＊＊＊＊＊＊＊ 指向常量的指针（不能通过解引修改指针指向地址的值，但可以把指针指向另一个地址） ＊＊＊＊＊＊＊＊＊＊
+    const int num = 9;
+    int otherNum = 909;
+    const int *pnum = &num;
+    printf("num%d, otherNum=%d, *pnum=%d \n", num, otherNum, *pnum);
+//    num = 10;   // 编译时提示“向只读变量 ‘num’ 赋值"
+//    *pnum = 10;   // 编译时提示“向只读位置赋值"
+    pnum = &otherNum;
+    printf("执行pnum = &otherNum;, *pnum=%d \n", *pnum);
+//    输出结果：
+//    num9, otherNum=909, *pnum=9
+//    执行pnum = &otherNum;, *pnum=909
+
+    // ＊＊＊＊＊＊＊＊＊＊ 指向非常量的常量指针（可以通过解引修改指针指向地址的值，但不可以把指针指向另一个地址） ＊＊＊＊＊＊＊＊＊＊
+    int a = 10;
+    int *const pa = &a;
+    printf("\na=%d, pa's address=%p, *pa=%d \n", a, pa, *pa);
+    *pa = 11;
+//    pa = &otherNum;   //  编译时提示“向只读变量 ‘pa’ 赋值"
+    printf("执行*pa=11后，a=%d, pa's address=%p, *pa=%d \n", a, pa, *pa);
+//    输出结果：
+//    a=10, pa's address=0x7fff714da5b4, *pa=10
+//    执行*pa=11后，a=11, pa's address=0x7fff714da5b4, *pa=11
+
+    // ＊＊＊＊＊＊＊＊＊＊ 指向常量的常量指针（不可以通过解引修改指针指向地址的值，不可以把指针指向另一个地址） ＊＊＊＊＊＊＊＊＊＊
+    int b = 100;
+    const int *const pb = &b;
+    printf("\nb=%d, pb's address=%p, *pb=%d \n", b, pb, *pb);
+//    pb = &otherNum;   // 编译时提示“向只读变量 ‘pb’ 赋值"
+//    *pb = 199;   // 编译时提示“向只读位置赋值"
+//    输出结果：
+//    b=100, pb's address=0x7fff4f947cd8, *pb=100
+}
+
 int main(int argc, char **argv) {
     assign();
     arrayPointer();
     stringPointer();
+    pointerAndConst();
 
     return 0;
 }
