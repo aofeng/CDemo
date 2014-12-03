@@ -1,5 +1,8 @@
 /*
- * 打印一个很大的字母I。
+ * Description: 打印一个很大的字母I。
+ *     Created: 2014年7月28日 下午9:11:54
+ *      Author: NieYong<aofengblog@163.com>
+ *        Blog: http://aofengblog.blog.163.com
  */
 
 #include <stdio.h>

@@ -1,5 +1,9 @@
-/* C语言指针 */
-
+/*
+ * Description: 指针操作。
+ *     Created: 2014年11月17日 下午7:23:00
+ *      Author: NieYong<aofengblog@163.com>
+ *        Blog: http://aofengblog.blog.163.com
+ */
 #include <stdio.h>
 #include <stdint.h>
 

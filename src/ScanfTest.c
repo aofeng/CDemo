@@ -1,3 +1,10 @@
+/*
+ * Description: 打印一个很大的字母I。
+ *     Created: 2014年8月6日 下午8:12:50
+ *      Author: NieYong<aofengblog@163.com>
+ *        Blog: http://aofengblog.blog.163.com
+ */
+
 #include <stdio.h>
 
 /*

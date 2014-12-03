@@ -1,5 +1,8 @@
-/**
- * 动态内存分配。
+/*
+ * Description: 动态内存分配。
+ *     Created: 2014年11月27日 下午8:15:00
+ *      Author: NieYong<aofengblog@163.com>
+ *        Blog: http://aofengblog.blog.163.com
  */
 
 #include <stdio.h>
