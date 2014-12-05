@@ -20,16 +20,17 @@ int main(int argc, char **argv) {
     printf("请输入一行字符串，按回车结束输入:");
     char c = getchar();
     while (c != EOF && c != '\n') {
-        if (c == ' ') {
+        if (c == ' ') { // 空格原样输出
             putchar(c);
-        } else {
-            for (i = 0; i < len; i++) {
-                if (strList[i] == c) {
-                    if (strList[i-1]) {
-                        putchar(strList[i-1]);
-                    } else {
-                        putchar(c);
-                    }
+            continue;
+        }
+
+        for (i = 0; i < len; i++) {
+            if (strList[i] == c) {
+                if (strList[i - 1]) {
+                    putchar(strList[i - 1]);
+                } else {
+                    putchar(c); // 参考表最左边的字符原样输出
                 }
             }
         }
