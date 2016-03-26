@@ -2,7 +2,6 @@
  * Description: 字符串基础操作。
  *     Created: 2014年12月3日 下午8:20:10
  *      Author: NieYong<aofengblog@163.com>
- *        Blog: http://aofengblog.blog.163.com
  */
 
 #include <stdlib.h>
@@ -12,7 +11,7 @@
 /**
  * 比较字符串。
  */
-void equals() {
+void compare() {
     char str[] = "abcdefghi";
     char *pStr = malloc(10);
     strcpy(pStr, "abcdefghi");
@@ -30,10 +29,15 @@ void equals() {
     free(pStr);
 }
 
+/**
+ * 字符串拼接。
+ */
+void join() {
 
+}
 
 int main(int argc, char **argv) {
-    equals();
+    compare();
 
     return EXIT_SUCCESS;
 }

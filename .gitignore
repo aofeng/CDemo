@@ -23,3 +23,6 @@
 *.hex
 /.cproject
 /.project
+/build
+/dist
+/nbproject

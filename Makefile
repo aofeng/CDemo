@@ -1,7 +1,7 @@
-program = PrintBigCharI
+source_path = src/array
+program = array
 
 source_file = $(program).c
-source_path = src
 sources = $(source_path)/$(source_file)
 
 object_file = $(program).o
@@ -12,12 +12,11 @@ dist_file = $(program)
 dist_path = dist
 dist = $(dist_path)/$(dist_file)
 
-
-Program: ProgramMid
-	gcc -Wall -o $(dist) $(objects)
-ProgramMid: ProgramSource
-	gcc -Wall -o $(objects) -c $(sources)
-ProgramSource: $(sources)
+all: Compile
+	gcc -Wall --std=c99 -g -o $(dist) $(objects)
+Compile: Source
+	gcc -Wall --std=c99 -g -o $(objects) -c $(sources)
+Source: $(sources)
 
 .PHONY:
 clean:
