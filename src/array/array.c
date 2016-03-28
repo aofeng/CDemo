@@ -1,5 +1,5 @@
 /*
- * Description: 数据操作：历遍，数据与指针。
+ * Description: 数组操作：历遍，数据与指针。
  *     Created: 2016年3月26日
  *      Author: NieYong<aofengblog@163.com>
  */

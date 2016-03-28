@@ -1,5 +1,5 @@
 /*
- * Description: 指向数据的指针。
+ * Description: 指向数组的指针。
  *     Created: 2016年3月26日
  *      Author: NieYong<aofengblog@163.com>
  */
