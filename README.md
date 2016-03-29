@@ -11,3 +11,4 @@ C语言代码示例。
 3、标准库
 
 * [字符串](src/std/string/string.c)
+* [文件读写](src/std/stdio/file_read_write.c)
