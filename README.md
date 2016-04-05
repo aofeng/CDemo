@@ -2,7 +2,9 @@ CDemo
 =====
 C语言代码示例。
 
-1、[数组](src/array/array.c)
+1、数据结构
+
+* [数组](src/data_structure/array.c)
 
 2、指针
 
