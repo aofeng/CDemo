@@ -5,6 +5,7 @@ C语言代码示例。
 1、数据结构
 
 * [数组](src/data_structure/array.c)
+* [struct与union](src/data_structure/struct_union.c)
 
 2、指针
 
