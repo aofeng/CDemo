@@ -1,5 +1,5 @@
 /*
- * Description: 进程相关API调用。
+ * Description: 获取登陆的用户信息。
  *     Created: 2016年4月6日
  *      Author: NieYong<aofengblog@163.com>
  */
