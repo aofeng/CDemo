@@ -15,6 +15,7 @@ C语言代码示例。
 
 * [字符串](src/std/string/string.c)
 * [文件读写](src/std/stdio/file_read_write.c)
+* [日期和时间](src/std/time/date_time.c)
 
 4、UNIX编程
 
