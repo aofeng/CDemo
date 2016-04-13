@@ -4,12 +4,16 @@
  *      Author: NieYong<aofengblog@163.com>
  */
 
+#ifndef __USE_BSD
+    #define __USE_BSD
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <dirent.h>
-#include <sys/stat.h>
 #include <time.h>
+#include <unistd.h>
+#include <sys/stat.h>
 
 /**
  * 将秒数转换成"2016-04-08 18:30:20"格式的字符串。
@@ -32,12 +36,20 @@ void printDir(char *dir_path) {
     printf("----------------------------------------------------------------------\n");
     while (NULL != dp) {
         stat(dp->d_name, &fp);
-        if (S_ISDIR(fp.st_mode)) {
-            ftype = "DIR";
-        } else if (S_ISREG(fp.st_mode)) {
+        if (S_ISREG(fp.st_mode)) {
             ftype = "FILE";
+        } else if (S_ISCHR(fp.st_mode)) {
+            ftype = "CHR";
+        } else if (S_ISFIFO(fp.st_mode)) {
+            ftype = "FIFO";
+        } else if (S_ISLNK(fp.st_mode)) {
+            ftype = "LINK";
+        } else if (S_ISBLK(fp.st_mode)) {
+            ftype = "BLK";
+        } else if (S_ISDIR(fp.st_mode)) {
+            ftype = "DIR";
         } else {
-            ftype = "UN";
+            ftype = "UNKO";
         }
         sec2datetimestr(fp.st_ctime, ctime);
         sec2datetimestr(fp.st_mtime, mtime);
