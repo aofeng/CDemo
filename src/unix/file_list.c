@@ -29,13 +29,68 @@ void sec2datetimestr(const time_t seconds, char *datetimestr) {
     strftime(datetimestr, 20, "%Y-%m-%d %H:%M:%S", localtime(&seconds));
 }
 
+void computeAccess(char *access_str, mode_t mode) {
+    // user access
+    if (S_IRUSR & mode) {
+        access_str[0] = 'r';
+    } else {
+        access_str[0] = 'r';
+    }
+    if (S_IWUSR & mode) {
+        access_str[1] = 'w';
+    } else {
+        access_str[1] = 'r';
+    }
+    if (S_IXUSR & mode) {
+        access_str[2] = 'x';
+    } else {
+        access_str[2] = 'r';
+    }
+
+    // group access
+    if (S_IRGRP & mode) {
+        access_str[3] = 'r';
+    } else {
+        access_str[3] = 'r';
+    }
+    if (S_IWGRP & mode) {
+        access_str[4] = 'w';
+    } else {
+        access_str[4] = '-';
+    }
+    if (S_IXGRP & mode) {
+        access_str[5] = 'x';
+    } else {
+        access_str[5] = '-';
+    }
+
+    // other access
+    if (S_IROTH & mode) {
+        access_str[6] = 'r';
+    } else {
+        access_str[6] = '-';
+    }
+    if (S_IWOTH & mode) {
+        access_str[7] = 'w';
+    } else {
+        access_str[7] = '-';
+    }
+    if (S_IXOTH & mode) {
+        access_str[8] = 'x';
+    } else {
+        access_str[8] = '-';
+    }
+    access_str[9] = '\0';
+}
+
 void printDir(char *dir_path) {
     struct stat buf;
     char *ftype;
+    char faccess[10];
     char ctime[20];
     char mtime[20];
 
-    printf("%-4s %-50s %-22s %-22s\n", "type", "file_name", "ctime", "mtime");
+    printf("%-4s %-10s %-50s %-22s %-22s\n", "type", "access", "file_name", "ctime", "mtime");
     printf("----------------------------------------------------------------------------------------------------\n");
     chdir(dir_path); // 由于opendir传入的参数是目录名，因此必须切换至该目录
     DIR *ds = opendir(dir_path);
@@ -64,9 +119,10 @@ void printDir(char *dir_path) {
         } else {
             ftype = "UNKO";
         }
+        computeAccess(faccess, buf.st_mode);
         sec2datetimestr(buf.st_ctime, ctime);
         sec2datetimestr(buf.st_mtime, mtime);
-        printf("%-4s %-50s %-22s %-22s\n", ftype, dp->d_name, ctime, mtime);
+        printf("%-4s %-10s %-50s %-22s %-22s\n", ftype, faccess, dp->d_name, ctime, mtime);
 
         dp = readdir(ds);
     }
