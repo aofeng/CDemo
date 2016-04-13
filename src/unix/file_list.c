@@ -29,57 +29,22 @@ void sec2datetimestr(const time_t seconds, char *datetimestr) {
     strftime(datetimestr, 20, "%Y-%m-%d %H:%M:%S", localtime(&seconds));
 }
 
+/**
+ * 根据st_mode计算文件的权限访问字符串（rwxrwxrwx）。
+ * @param access_str 存储权限访问字符串的数组
+ * @param mode inode中的st_mode
+ */
 void computeAccess(char *access_str, mode_t mode) {
-    // user access
-    if (S_IRUSR & mode) {
-        access_str[0] = 'r';
-    } else {
-        access_str[0] = 'r';
-    }
-    if (S_IWUSR & mode) {
-        access_str[1] = 'w';
-    } else {
-        access_str[1] = 'r';
-    }
-    if (S_IXUSR & mode) {
-        access_str[2] = 'x';
-    } else {
-        access_str[2] = 'r';
+    static int access[] = {S_IRUSR, S_IWUSR, S_IXUSR, S_IRGRP, S_IWGRP, S_IXGRP, S_IROTH, S_IWOTH, S_IXOTH};
+    static char rwx[] = {'r', 'w', 'x'};
+    for (unsigned int i = 0; i < 9; ++i) {
+        if (access[i] & mode) {
+            access_str[i] = rwx[i%3];
+        } else {
+            access_str[i] = '-';
+        }
     }
 
-    // group access
-    if (S_IRGRP & mode) {
-        access_str[3] = 'r';
-    } else {
-        access_str[3] = 'r';
-    }
-    if (S_IWGRP & mode) {
-        access_str[4] = 'w';
-    } else {
-        access_str[4] = '-';
-    }
-    if (S_IXGRP & mode) {
-        access_str[5] = 'x';
-    } else {
-        access_str[5] = '-';
-    }
-
-    // other access
-    if (S_IROTH & mode) {
-        access_str[6] = 'r';
-    } else {
-        access_str[6] = '-';
-    }
-    if (S_IWOTH & mode) {
-        access_str[7] = 'w';
-    } else {
-        access_str[7] = '-';
-    }
-    if (S_IXOTH & mode) {
-        access_str[8] = 'x';
-    } else {
-        access_str[8] = '-';
-    }
     access_str[9] = '\0';
 }
 
