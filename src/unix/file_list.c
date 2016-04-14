@@ -31,13 +31,14 @@ void sec2datetimestr(const time_t seconds, char *datetimestr) {
 
 /**
  * 根据st_mode计算文件的权限访问字符串（rwxrwxrwx）。
- * @param access_str 存储权限访问字符串的数组
  * @param mode inode中的st_mode
+ * @param access_str 存储权限访问字符串的数组
  */
-void computeAccess(char *access_str, mode_t mode) {
+void compute_access(mode_t mode, char *access_str) {
     static int access[] = {S_IRUSR, S_IWUSR, S_IXUSR, S_IRGRP, S_IWGRP, S_IXGRP, S_IROTH, S_IWOTH, S_IXOTH};
     static char rwx[] = {'r', 'w', 'x'};
-    for (unsigned int i = 0; i < 9; ++i) {
+    unsigned int i;
+    for (i = 0; i < 9; ++i) {
         if (access[i] & mode) {
             access_str[i] = rwx[i%3];
         } else {
@@ -48,14 +49,37 @@ void computeAccess(char *access_str, mode_t mode) {
     access_str[9] = '\0';
 }
 
+/**
+ * 根据st_mode生成文件类型字符串（DIR，FILE等）。
+ */
+void compute_ftype(const struct stat *buf, char *ftype) {
+    if (S_ISREG(buf->st_mode)) {
+        strcpy(ftype, "FILE");
+    } else if (S_ISDIR(buf->st_mode)) {
+        strcpy(ftype, "DIR");
+    } else if (S_ISCHR(buf->st_mode)) {
+        strcpy(ftype, "CHR");
+    } else if (S_ISFIFO(buf->st_mode)) {
+        strcpy(ftype, "FIFO");
+    } else if (S_ISLNK(buf->st_mode)) {
+        strcpy(ftype, "LINK");
+    } else if (S_ISBLK(buf->st_mode)) {
+        strcpy(ftype, "BLK");
+    } else if (S_ISSOCK(buf->st_mode)) { // 定义_GNU_SOURCE才能使用S_ISSOCK
+        strcpy(ftype, "SOCK");
+    } else {
+        strcpy(ftype, "UNKO");
+    }
+}
+
 void printDir(char *dir_path) {
     struct stat buf;
-    char *ftype;
+    char ftype[5];
     char faccess[10];
     char ctime[20];
     char mtime[20];
 
-    printf("%-4s %-10s %-50s %-22s %-22s\n", "type", "access", "file_name", "ctime", "mtime");
+    printf("%-5s %-10s %-50s %-22s %-22s\n", "type", "access", "file_name", "ctime", "mtime");
     printf("----------------------------------------------------------------------------------------------------\n");
     chdir(dir_path); // 由于opendir传入的参数是目录名，因此必须切换至该目录
     DIR *ds = opendir(dir_path);
@@ -67,27 +91,11 @@ void printDir(char *dir_path) {
             dp = readdir(ds);
             continue;
         }
-        if (S_ISREG(buf.st_mode)) {
-            ftype = "FILE";
-        } else if (S_ISDIR(buf.st_mode)) {
-            ftype = "DIR";
-        } else if (S_ISCHR(buf.st_mode)) {
-            ftype = "CHR";
-        } else if (S_ISFIFO(buf.st_mode)) {
-            ftype = "FIFO";
-        } else if (S_ISLNK(buf.st_mode)) {
-            ftype = "LINK";
-        } else if (S_ISBLK(buf.st_mode)) {
-            ftype = "BLK";
-        } else if (S_ISSOCK(buf.st_mode)) { // 定义_GNU_SOURCE才能使用S_ISSOCK
-            ftype = "SOCK";
-        } else {
-            ftype = "UNKO";
-        }
-        computeAccess(faccess, buf.st_mode);
+        compute_ftype(&buf, ftype);
+        compute_access(buf.st_mode, faccess);
         sec2datetimestr(buf.st_ctime, ctime);
         sec2datetimestr(buf.st_mtime, mtime);
-        printf("%-4s %-10s %-50s %-22s %-22s\n", ftype, faccess, dp->d_name, ctime, mtime);
+        printf("%-5s %-10s %-50s %-22s %-22s\n", ftype, faccess, dp->d_name, ctime, mtime);
 
         dp = readdir(ds);
     }
