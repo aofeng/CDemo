@@ -17,6 +17,7 @@ C语言代码示例。
 * [文件读写](src/std/stdio/file_read_write.c)
 * [日期和时间](src/std/time/date_time.c)
 * [退出处理器](src/std/exit_handler.c)
+* [环境变量](src/std/enviroment.c)
 
 4、UNIX编程
 
